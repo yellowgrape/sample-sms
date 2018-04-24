@@ -9,5 +9,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /** send sms no callback */
+        functional.android.telephony.sms.send("00000000000", "hello");
+        /** send sms with callback */
+        functional.android.telephony.sms.send(this, "00000000000", "hello", 1024, functional.log::e);
     }
 }
