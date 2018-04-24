@@ -32,5 +32,5 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.github.rebeccapurple:android:b5a23cc3f6'
-    implementation 'com.github.rebeccapurple:android:0d4eed3412'
+    implementation 'com.github.rebeccapurple:java:0d4eed3412'
 }

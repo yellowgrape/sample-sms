@@ -22,7 +22,7 @@ dependencies {
     ...
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.github.rebeccapurple:android:b5a23cc3f6'
-    implementation 'com.github.rebeccapurple:android:0d4eed3412'
+    implementation 'com.github.rebeccapurple:java:0d4eed3412'
 }
 ```
 
@@ -75,4 +75,71 @@ public class Application extends android.app.Application {
         ...
     </Application>
         
+```
+
+5. Permission 정의 (AndroidManifest.xml)
+
+```
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+```
+
+6. Permission Activity 생성
+
+```
+package io.textory.sms;
+
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
+
+public class PermissionActivity extends AppCompatActivity {
+    private static String[] PERMISSIONS = {
+            Manifest.permission.SEND_SMS,
+            Manifest.permission.READ_PHONE_STATE
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS);
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS, 1);
+            return;
+        }
+        permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS, 1);
+            return;
+        }
+        
+        /** 다른 ACTIVITY 시작 코드 */
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+}
+
+```
+
+7. 최초 실행 ACTIVITY 를 PERMISSION ACTIVITY 로 변경 (AndroidManifest.xml)
+
+```
+ <application
+        ...>
+        
+        <activity android:name=".MainActivity" />
+        <activity android:name=".PermissionActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+    </application>
 ```
