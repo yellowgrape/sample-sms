@@ -10,7 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 public class PermissionActivity extends AppCompatActivity {
     private static String[] PERMISSIONS = {
             Manifest.permission.SEND_SMS,
-            Manifest.permission.READ_PHONE_STATE
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.RECEIVE_SMS
     };
 
     @Override
@@ -24,6 +25,11 @@ public class PermissionActivity extends AppCompatActivity {
             return;
         }
         permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS, 1);
+            return;
+        }
+        permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS);
         if (permission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, PERMISSIONS, 1);
             return;
